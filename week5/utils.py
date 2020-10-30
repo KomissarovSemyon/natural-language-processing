@@ -43,10 +43,6 @@ def load_embeddings(embeddings_path):
     # Hint: you have already implemented a similar routine in the 3rd assignment.
     # Note that here you also need to know the dimension of the loaded embeddings.
     # When you load the embeddings, use numpy.float32 type as dtype
-
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
     model = pd.read_csv(embeddings_path, sep='\t', header=None, index_col=0)
     size = model.shape[1]
     model = model.T.to_dict(orient='list')
@@ -70,12 +66,6 @@ def question_to_vec(question, embeddings, dim):
         return np.mean(words_embeddings, axis=0)
     else:
         return np.zeros(dim)
-
-    # remove this when you're done
-    # raise NotImplementedError(
-    #     "Open utils.py and fill with your code. In case of Google Colab, download"
-    #     "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-    #     "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
 
 
 def unpickle_file(filename):
