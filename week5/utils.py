@@ -2,6 +2,7 @@ import nltk
 import pickle
 import re
 import numpy as np
+import pandas as pd
 
 nltk.download('stopwords')
 from nltk.corpus import stopwords
@@ -12,7 +13,7 @@ RESOURCE_PATH = {
     'TAG_CLASSIFIER': 'tag_classifier.pkl',
     'TFIDF_VECTORIZER': 'tfidf_vectorizer.pkl',
     'THREAD_EMBEDDINGS_FOLDER': 'thread_embeddings_by_tags',
-    'WORD_EMBEDDINGS': 'data/word_embeddings.tsv',
+    'WORD_EMBEDDINGS': '/content/drive/My Drive/Colab Notebooks/sodd.tsv',
 }
 
 
@@ -46,12 +47,11 @@ def load_embeddings(embeddings_path):
     ########################
     #### YOUR CODE HERE ####
     ########################
-
-    # remove this when you're done
-    raise NotImplementedError(
-        "Open utils.py and fill with your code. In case of Google Colab, download"
-        "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+    model = pd.read_csv(embeddings_path, sep='\t', header=None, index_col=0)
+    size = model.shape[1]
+    model = model.T.to_dict(orient='list')
+    starspace_embeddings = {k: np.array(model[k], dtype=np.float32) for k in model}
+    return starspace_embeddings, size
 
 
 def question_to_vec(question, embeddings, dim):
@@ -62,12 +62,20 @@ def question_to_vec(question, embeddings, dim):
     ########################
     #### YOUR CODE HERE ####
     ########################
+    words_embeddings = []
+    for w in question.split():
+        if w in embeddings:
+            words_embeddings.append(embeddings[w])
+    if words_embeddings:
+        return np.mean(words_embeddings, axis=0)
+    else:
+        return np.zeros(dim)
 
     # remove this when you're done
-    raise NotImplementedError(
-        "Open utils.py and fill with your code. In case of Google Colab, download"
-        "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+    # raise NotImplementedError(
+    #     "Open utils.py and fill with your code. In case of Google Colab, download"
+    #     "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
+    #     "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
 
 
 def unpickle_file(filename):
