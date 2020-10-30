@@ -54,10 +54,6 @@ def question_to_vec(question, embeddings, dim):
     """Transforms a string to an embedding by averaging word embeddings."""
 
     # Hint: you have already implemented exactly this function in the 3rd assignment.
-
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
     words_embeddings = []
     for w in question.split():
         if w in embeddings:
